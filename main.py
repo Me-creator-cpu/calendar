@@ -53,19 +53,19 @@ class ReservationApp:
             st.write(f"Invalid input, please enter a valid number")
 
     def run(self):
-        while True:
-            st.write(f"Booking app")
-            if st.button("Add reservation"):
-                self.add_reservation()
-            if st.button("View reservations"):
-                self.view_reservations()
-            if st.button("Cancel reservation"):
-                self.cancel_reservation()
-            if st.button("Exit app"):
-                st.write(f"Exiting app, bye bye")
-                break
+        #while True:
+        st.write(f"Booking app")
+        if st.button("Add reservation"):
+            self.add_reservation()
+        if st.button("View reservations"):
+            self.view_reservations()
+        if st.button("Cancel reservation"):
+            self.cancel_reservation()
+        if st.button("Exit app"):
+            st.write(f"Exiting app, bye bye")
+            break
 
 if  __name__ == "__main__":
     app = ReservationApp()
     app.run()
-    
+
