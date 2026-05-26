@@ -18,10 +18,10 @@ class ReservationApp:
         self.reservations = []
 
     def add_reservation(self):
-        name = st.text_input("Name")
+        name = st.text_input("Name", value="Test anon")
         date = st.date_input("Date")
         time = st.time_input("Time")
-        num_people = int(st.number_input("Num people"))
+        num_people = int(st.number_input("Num people", min_value=int(1), value=int(1)))
 
         if st.button("Make reservation"):
             reservation = Reservation(name,date,time,num_people)
