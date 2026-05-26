@@ -63,7 +63,7 @@ class ReservationApp:
             self.cancel_reservation()
         if st.button("Exit app"):
             st.write(f"Exiting app, bye bye")
-            break
+            #break
 
 if  __name__ == "__main__":
     app = ReservationApp()
