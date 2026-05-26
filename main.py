@@ -23,12 +23,12 @@ class ReservationApp:
         time = st.time_input("Time")
         num_people = int(st.number_input("Num people"))
 
-        reservation = Reservation(name,date,time,num_people)
+        if st.button("Make reservation"):
+            reservation = Reservation(name,date,time,num_people)
+            self.reservations.append(reservation)
 
-        self.reservations.append(reservation)
-
-        st.write(f"Reservation added for {name} on {date} at {time} for {num_people} people.")
-        st.balloons()
+            st.write(f"Reservation created for {name} on {date} at {time} for {num_people} people.")
+            st.balloons()
 
     def view_reservations(self):
         if not self.reservations:
