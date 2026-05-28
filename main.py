@@ -245,7 +245,8 @@ state = calendar(
 if state.get("eventsSet") is not None:
     st.session_state["events"] = state["eventsSet"]
 
-st.write(state)
+with st.expander("State",False):
+    st.write(state)
 
 if 1==2:
     st.markdown("## API reference")
