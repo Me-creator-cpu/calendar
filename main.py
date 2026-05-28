@@ -66,7 +66,7 @@ class ReservationApp:
             #break
 
 if st.button("Demo"):
-    st.switch_page("demo.py")
+    st.switch_page("/demo.py")
 
 if  __name__ == "__main__":
     app = ReservationApp()
