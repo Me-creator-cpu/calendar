@@ -1,5 +1,4 @@
 import streamlit as st
-
 from streamlit_calendar import calendar
 
 st.set_page_config(page_title="Demo for streamlit-calendar", page_icon="📆")
