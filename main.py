@@ -65,6 +65,9 @@ class ReservationApp:
             st.write(f"Exiting app, bye bye")
             #break
 
+if st.button("Demo"):
+    st.switch_page("demo.py")
+
 if  __name__ == "__main__":
     app = ReservationApp()
     app.run()
