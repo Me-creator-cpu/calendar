@@ -266,7 +266,7 @@ def init_connection():
         + st.secrets["Uid"]
         + ";Pwd="
         + st.secrets["Pwd"]
-        + "Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
+        #+ "Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
     )
 
 conn = init_connection()
