@@ -1,5 +1,6 @@
 import streamlit as st
 from streamlit_calendar import calendar
+import pyodbc
 
 st.set_page_config(page_title="Demo for streamlit-calendar", page_icon="📆")
 
@@ -251,3 +252,40 @@ with st.expander("State",False):
 if 1==2:
     st.markdown("## API reference")
     st.help(calendar)
+
+
+
+@st.cache_resource
+def init_connection():
+    return pyodbc.connect(
+        "DRIVER={ODBC Driver 18 for SQL Server};SERVER="
+        + st.secrets["Server"]
+        + ";Database="
+        + st.secrets["Database"]
+        + ";Uid="
+        + st.secrets["Uid"]
+        + ";Pwd="
+        + st.secrets["Pwd"]
+        + "Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
+    )
+
+conn = init_connection()
+
+# Driver={ODBC Driver 18 for SQL Server};
+# Server=tcp:ato-db.database.windows.net,1433;
+# Database=free-sql-db-2988222;
+# Uid=admindb;
+# Pwd={your_password_here};
+# Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;
+
+@st.cache_data(ttl=600)
+def run_query(query):
+    with conn.cursor() as cur:
+        cur.execute(query)
+        return cur.fetchall()
+
+rows = run_query("SELECT * from mytable;")
+
+# Print results.
+for row in rows:
+    st.write(f"{row[0]} has a :{row[1]}:")
