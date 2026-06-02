@@ -285,7 +285,8 @@ def run_query(query):
         return cur.fetchall()
 
 def display_table(tablename):
-    rows = run_query(f'"SELECT * from {tablename};")    
+    qry_sql=f"SELECT * from {tablename};"
+    rows = run_query(qry_sql)    
     st.table(rows)
 
 rows = run_query("SELECT * from mytable;")
