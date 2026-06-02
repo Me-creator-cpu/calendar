@@ -288,7 +288,7 @@ def display_table(tablename):
     cxn_cs ="DRIVER={ODBC Driver 17 for SQL Server};"
     cxn_cs +=f"SERVER={st.secrets["Server"]};Database={st.secrets["Database"]};Uid={st.secrets["Uid"]};Pwd={st.secrets["Pwd"]}"
     cxn = st.connection(cxn_cs)
-    df = conn.query(f"SELECT * FROM {tablename}")
+    df = cxn.query(f"SELECT * FROM {tablename}")
     st.dataframe(df)
 
 rows = run_query("SELECT * from mytable;")
