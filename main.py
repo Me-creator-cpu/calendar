@@ -284,6 +284,10 @@ def run_query(query):
         cur.execute(query)
         return cur.fetchall()
 
+def display_table(tablename):
+    rows = run_query(f'"SELECT * from {tablename};")    
+    st.table(rows)
+
 rows = run_query("SELECT * from mytable;")
 
 # Print results.
