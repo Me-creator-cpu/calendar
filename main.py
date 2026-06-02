@@ -1,6 +1,7 @@
 import streamlit as st
 from streamlit_calendar import calendar
 import pyodbc
+import pandas as pd
 
 st.set_page_config(page_title="Demo for streamlit-calendar", page_icon="📆")
 
@@ -285,11 +286,12 @@ def run_query(query):
         return cur.fetchall()
 
 def display_table(tablename):
-    cxn_cs ="DRIVER={ODBC Driver 17 for SQL Server};"
-    cxn_cs +=f"SERVER={st.secrets["Server"]};Database={st.secrets["Database"]};Uid={st.secrets["Uid"]};Pwd={st.secrets["Pwd"]}"
-    cxn = st.connection(cxn_cs)
-    df = cxn.query(f"SELECT * FROM {tablename}")
-    st.dataframe(df)
+    with conn.cursor() as cur:
+        cur.execute(f"SELECT * FROM {tablename}")
+        result_port_map = pd.DataFrame(cur.fetchall())
+        result_port_map.columns = cur.keys()
+
+    return st.dataframe(result_port_map)
 
 rows = run_query("SELECT * from mytable;")
 
