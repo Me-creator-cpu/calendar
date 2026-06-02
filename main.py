@@ -2,6 +2,7 @@ import streamlit as st
 from streamlit_calendar import calendar
 import pyodbc
 import pandas as pd
+#from sqlalchemy import create_engine
 
 st.set_page_config(page_title="Demo for streamlit-calendar", page_icon="📆")
 
@@ -255,48 +256,53 @@ if 1==2:
     st.help(calendar)
 
 
+if 1 ==2:
+    @st.cache_resource
+    def init_connection():
+        return pyodbc.connect(
+            "DRIVER={ODBC Driver 17 for SQL Server};SERVER="
+            + st.secrets["Server"]
+            + ";Database="
+            + st.secrets["Database"]
+            + ";Uid="
+            + st.secrets["Uid"]
+            + ";Pwd="
+            + st.secrets["Pwd"]
+            #+ "Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
+        )
 
-@st.cache_resource
-def init_connection():
-    return pyodbc.connect(
-        "DRIVER={ODBC Driver 17 for SQL Server};SERVER="
-        + st.secrets["Server"]
-        + ";Database="
-        + st.secrets["Database"]
-        + ";Uid="
-        + st.secrets["Uid"]
-        + ";Pwd="
-        + st.secrets["Pwd"]
-        #+ "Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
-    )
+    conn = init_connection()
 
-conn = init_connection()
+    # Driver={ODBC Driver 18 for SQL Server};
+    # Server=tcp:ato-db.database.windows.net,1433;
+    # Database=free-sql-db-2988222;
+    # Uid=admindb;
+    # Pwd={your_password_here};
+    # Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;
 
-# Driver={ODBC Driver 18 for SQL Server};
-# Server=tcp:ato-db.database.windows.net,1433;
-# Database=free-sql-db-2988222;
-# Uid=admindb;
-# Pwd={your_password_here};
-# Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;
+    @st.cache_data(ttl=600)
+    def run_query(query):
+        with conn.cursor() as cur:
+            cur.execute(query)
+            return cur.fetchall()
 
-@st.cache_data(ttl=600)
-def run_query(query):
-    with conn.cursor() as cur:
-        cur.execute(query)
-        return cur.fetchall()
+    def display_table(tablename):
+        with conn.cursor() as cur:
+            cur.execute(f"SELECT * FROM {tablename}")
+            result_port_map = pd.DataFrame(cur.fetchall())
+            result_port_map.columns = cur.keys()
+        return result_port_map
+        #return st.dataframe(result_port_map)
 
-def display_table(tablename):
-    with conn.cursor() as cur:
-        cur.execute(f"SELECT * FROM {tablename}")
-        result_port_map = pd.DataFrame(cur.fetchall())
-        result_port_map.columns = cur.keys()
+    rows = run_query("SELECT * from mytable;")
 
-    return st.dataframe(result_port_map)
+    # Print results.
+    for row in rows:
+        st.write(f"{row[0]} has a :{row[1]}:")
 
-rows = run_query("SELECT * from mytable;")
+    display_table('t_niveau')
 
-# Print results.
-for row in rows:
-    st.write(f"{row[0]} has a :{row[1]}:")
-
-display_table('t_niveau')
+sql_conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+st.secrets["Server"]+';DATABASE='+st.secrets["Database"]+';Uid='+st.secrets["Uid"]+';Pwd='+st.secrets["Pwd"]+'Trusted_Connection=yes') 
+query = "SELECT * FROM t_niveau"
+df = pd.read_sql(query, sql_conn)
+st.dataframe(df)
