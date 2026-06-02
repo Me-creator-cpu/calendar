@@ -285,7 +285,7 @@ def run_query(query):
         return cur.fetchall()
 
 def display_table(tablename):
-    df = conn.query(f"SELECT * FROM tablename")
+    df = conn.query(f"SELECT * FROM {tablename}")
     st.dataframe(df)
 
 rows = run_query("SELECT * from mytable;")
