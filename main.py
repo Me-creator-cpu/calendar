@@ -302,7 +302,8 @@ if 1 ==2:
 
     display_table('t_niveau')
 
-sql_conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+st.secrets["Server"]+';DATABASE='+st.secrets["Database"]+';Uid='+st.secrets["Uid"]+';Pwd='+st.secrets["Pwd"]+';Trusted_Connection=yes') 
+sql_conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+st.secrets["Server"]+';DATABASE='+st.secrets["Database"]+';Uid='+st.secrets["Uid"]+';Pwd='+st.secrets["Pwd"]) 
+#;Trusted_Connection=yes'
 query = "SELECT * FROM t_niveau"
 df = pd.read_sql(query, sql_conn)
 st.dataframe(df)
