@@ -302,6 +302,14 @@ if 1 == 2:
 
     display_table('t_niveau')
 
+sql_conn = None
+
+def show_table(tabname):
+    query = "SELECT * FROM " + tabname
+    df = pd.read_sql(query, sql_conn)
+    return st.dataframe(df)
+
+
 
 if 1 == 2:
     sql_conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+st.secrets["Server"]+';DATABASE='+st.secrets["Database"]+';Uid='+st.secrets["Uid"]+';Pwd='+st.secrets["Pwd"]) 
@@ -320,7 +328,11 @@ with st.spinner("Connecting database...", show_time=True):
         st.error('Database unreachable', icon="🚨")
         cxn_status = False
 
+
+
 if cxn_status:
     query = "SELECT * FROM t_niveau"
     df = pd.read_sql(query, sql_conn)
     st.dataframe(df)
+
+    show_table('t_parent')
