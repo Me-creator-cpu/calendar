@@ -308,9 +308,10 @@ if state.get("sql_conn") is not None:
     sql_conn = st.session_state["sql_conn"]
 
 def show_table(tabname):
-    query = "SELECT * FROM " + tabname
-    df = pd.read_sql(query, sql_conn)
-    return st.dataframe(df)
+    if st.session_state["sql_conn"] is not None:
+        query = "SELECT * FROM " + tabname
+        df = pd.read_sql(query, st.session_state["sql_conn"])
+        return st.dataframe(df)
 
 
 
