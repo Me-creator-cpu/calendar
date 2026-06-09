@@ -256,7 +256,7 @@ if 1==2:
     st.help(calendar)
 
 
-if 1 ==2:
+if 1 == 2:
     @st.cache_resource
     def init_connection():
         return pyodbc.connect(
@@ -302,8 +302,25 @@ if 1 ==2:
 
     display_table('t_niveau')
 
-sql_conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+st.secrets["Server"]+';DATABASE='+st.secrets["Database"]+';Uid='+st.secrets["Uid"]+';Pwd='+st.secrets["Pwd"]) 
-#;Trusted_Connection=yes'
-query = "SELECT * FROM t_niveau"
-df = pd.read_sql(query, sql_conn)
-st.dataframe(df)
+
+if 1 == 2:
+    sql_conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+st.secrets["Server"]+';DATABASE='+st.secrets["Database"]+';Uid='+st.secrets["Uid"]+';Pwd='+st.secrets["Pwd"]) 
+    #;Trusted_Connection=yes'
+    query = "SELECT * FROM t_niveau"
+    df = pd.read_sql(query, sql_conn)
+    st.dataframe(df)
+
+cxn_status = False
+with st.spinner("Connecting database...", show_time=True):
+    try:
+        sql_conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+st.secrets["Server"]+';DATABASE='+st.secrets["Database"]+';Uid='+st.secrets["Uid"]+';Pwd='+st.secrets["Pwd"]) 
+        #;Trusted_Connection=yes'
+        cxn_status = True
+    except pyodbc.Error as ex:
+        st.error('Database unreachable', icon="🚨")
+        cxn_status = False
+
+if cxn_status:
+    query = "SELECT * FROM t_niveau"
+    df = pd.read_sql(query, sql_conn)
+    st.dataframe(df)
