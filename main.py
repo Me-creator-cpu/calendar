@@ -304,6 +304,9 @@ if 1 == 2:
 
 sql_conn = None
 
+if state.get("sql_conn") is not None:
+    sql_conn = st.session_state["sql_conn"]
+
 def show_table(tabname):
     query = "SELECT * FROM " + tabname
     df = pd.read_sql(query, sql_conn)
@@ -324,9 +327,11 @@ with st.spinner("Connecting database...", show_time=True):
         sql_conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+st.secrets["Server"]+';DATABASE='+st.secrets["Database"]+';Uid='+st.secrets["Uid"]+';Pwd='+st.secrets["Pwd"]) 
         #;Trusted_Connection=yes'
         cxn_status = True
+        st.session_state["sql_conn"] = sql_conn
     except pyodbc.Error as ex:
         st.error('Database unreachable', icon="🚨")
         cxn_status = False
+        st.session_state["sql_conn"] = None
 
 
 
